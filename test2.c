@@ -4,10 +4,10 @@
 int main (void)
 {
 	void *mlx;
-	void *mlx_win;
-	int x = 600;
-	int y = 300;
-
+	void *my_win;	
+	int x = 1920;
+	int y = 1080;
+	int color = 0xFF714D;
 
 	mlx = mlx_init();
 	if (mlx == NULL)
@@ -18,7 +18,14 @@ int main (void)
 		free(my_win);
 		return (1);	
 	}
-	mlx_destroy_window(mlx, mlx_win);
+	y  = 300;
+	while (y < 900)
+	{
+			mlx_pixel_put(mlx, my_win, 300, y++, color);
+	}
+		while (1)
+		;
+	mlx_destroy_window(mlx, my_win);
 	mlx_destroy_display(mlx);
 	free(mlx);
 }
