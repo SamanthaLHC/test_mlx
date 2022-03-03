@@ -17,6 +17,16 @@ int key_close(int keycode, t_setup *setup)
 	return(0);
 }
 
+int mouse_close(int button , int x, int y, t_setup *setup)
+{
+	(void)x;
+	(void)y;
+
+	if (button == 1)
+		mlx_loop_end(setup->mlx);
+	return (0);
+
+}
 int main(void)
 {
 	t_setup setup;
@@ -39,8 +49,7 @@ int main(void)
 		x++;
 	}
 	mlx_hook(setup.my_win, 2, (1L<<0), &key_close, &setup);	
-	// SEGFAULT HERE !!!!!!! + --> click n importe ou et non sur la croix /!\.
-	mlx_mouse_hook(setup.my_win, mlx_hook, &setup);
+	mlx_mouse_hook(setup.my_win, &mouse_close, &setup);
 	mlx_loop(setup.mlx);
 	//la boucle tente de recuperer le ptr de la window mm si elle est supprimee donc segfault
 	//il faut supprimet apres la loop_end et la loop
