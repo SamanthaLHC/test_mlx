@@ -38,9 +38,9 @@ int main(void)
 		}
 		x++;
 	}
-	//mlx_key_hook permet de simmplifier l evenement pour keyup
 	mlx_hook(setup.my_win, 2, (1L<<0), &key_close, &setup);	
-
+	// SEGFAULT HERE !!!!!!! + --> click n importe ou et non sur la croix /!\.
+	mlx_mouse_hook(setup.my_win, mlx_hook, &setup);
 	mlx_loop(setup.mlx);
 	//la boucle tente de recuperer le ptr de la window mm si elle est supprimee donc segfault
 	//il faut supprimet apres la loop_end et la loop
