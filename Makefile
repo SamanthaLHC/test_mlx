@@ -1,11 +1,14 @@
 NAME = test
-SRCS = test2.c
+SRCS = test_mlx.c
 OBJ = $(SRCS:%.c=%.o)
 CC = cc 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -Lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
+MLX = mlx/libmlx_Linux.a 
+$(NAME): $(OBJ) $(MLX)
+	$(CC) $(OBJ) -g3 -Lmlx -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz -o $(NAME)
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx -O3 -c $< -o $@
+	$(CC) -g3 -Wall -Wextra -Werror -I/usr/include -Imlx -O3 -c $< -o $@
+$(MLX):
+	make -C ./mlx 
 clean: 
 	rm -rf $(OBJ)
 
