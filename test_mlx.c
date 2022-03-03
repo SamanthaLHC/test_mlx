@@ -12,9 +12,8 @@ typedef struct s_setup
 
 int key_close(int keycode, t_setup *setup)
 {
-	(void)setup;
-	printf("%d\n", keycode);
-	//mlx_loop_end(setup->mlx);
+	if (keycode == 65307)
+		mlx_loop_end(setup->mlx);
 	return(0);
 }
 
