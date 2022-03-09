@@ -10,6 +10,7 @@ typedef struct s_setup
 	void *my_win;
 }	t_setup;
 
+//pour supprimer uniquement avc escp
 int key_close(int keycode, t_setup *setup)
 {
 	if (keycode == 65307)
@@ -17,6 +18,7 @@ int key_close(int keycode, t_setup *setup)
 	return(0);
 }
 
+/*
 int mouse_close(int button , int x, int y, t_setup *setup)
 {
 	(void)x;
@@ -26,15 +28,15 @@ int mouse_close(int button , int x, int y, t_setup *setup)
 		mlx_loop_end(setup->mlx);
 	return (0);
 }
+*/
 
-/*
 //(pour destroy notify?? do not work)
 int mouse_close (t_setup *setup)
 {
 	mlx_loop_end(setup->mlx);
 	return(0);
 }
-*/
+
 
 int main(void)
 {
@@ -59,8 +61,8 @@ int main(void)
 	}
 	mlx_hook(setup.my_win, 2, (1L<<0), &key_close, &setup);	
 	//do not work v 
-	//mlx_hook(setup.my_win, 17, 0, &mouse_close, (&setup)->mlx);
-	mlx_mouse_hook(setup.my_win, &mouse_close, &setup);
+	mlx_hook(setup.my_win, 17, 0, &mouse_close, (&setup));
+	//mlx_mouse_hook(setup.my_win, &mouse_close, &setup);
 	mlx_loop(setup.mlx);
 	//la boucle tente de recuperer le ptr de la window mm si elle est supprimee donc segfault
 	//il faut supprimet apres la loop_end et la loop
