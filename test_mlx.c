@@ -3,14 +3,12 @@
 #include <mlx.h>
 #include <X11/keysym.h>
 
-
 typedef struct s_setup
 {
 	void *mlx;
-	void *my_win;
-}	t_setup;
+	void *win;
+} t_setup;
 
-//pour supprimer uniquement avc escp
 int key_close(int keycode, t_setup *setup)
 {
 	if (keycode == 65307)
@@ -18,55 +16,42 @@ int key_close(int keycode, t_setup *setup)
 	return(0);
 }
 
-/*
-int mouse_close(int button , int x, int y, t_setup *setup)
-{
-	(void)x;
-	(void)y;
-
-	if (button == 1)
-		mlx_loop_end(setup->mlx);
-	return (0);
-}
-*/
-
-//(pour destroy notify?? do not work)
 int mouse_close (t_setup *setup)
 {
 	mlx_loop_end(setup->mlx);
 	return(0);
 }
 
-
-int main(void)
+int main()
 {
 	t_setup setup;
-	int x = 100;
-	int y;
+	void 	*img;
+	char	*relative_path = "./parquet_96_2.xpm";
+	int		x;
+	int		y;
+	int		w = 0;
+	int		h = 0;
 
 	setup.mlx = mlx_init();
 	if (!setup.mlx)
 		return (-1);
-	setup.my_win = mlx_new_window(setup.mlx, 1920, 1080, "pouet");
-
-	while ( x < 1000)
+	setup.win = mlx_new_window(setup.mlx, 1536, 960, "thanks for all the fish, music band");
+	img = mlx_xpm_file_to_image(setup.mlx, relative_path, &x, &y);
+	while (w <= 1536)
 	{
-		y = 300;
-		while ( y < 800)
+		while (h <= 960)
 		{
-		mlx_pixel_put(setup.mlx, setup.my_win, x, y, 0xf372d7);
-		y++;
+			mlx_put_image_to_window(setup.mlx, setup.win, img, w, h);
+			h+=96;
 		}
-		x++;
+		h = 0;
+		w+=96;
 	}
-	mlx_hook(setup.my_win, 2, (1L<<0), &key_close, &setup);	
-	//do not work v 
-	mlx_hook(setup.my_win, 17, 0, &mouse_close, (&setup));
-	//mlx_mouse_hook(setup.my_win, &mouse_close, &setup);
+	mlx_hook(setup.win, 2, (1L<<0), &key_close, &setup);	
+	mlx_hook(setup.win, 17, 0, &mouse_close, (&setup));
 	mlx_loop(setup.mlx);
-	//la boucle tente de recuperer le ptr de la window mm si elle est supprimee donc segfault
-	//il faut supprimet apres la loop_end et la loop
-	mlx_destroy_window(setup.mlx, setup.my_win);
+	mlx_destroy_image(setup.mlx, img);
+	mlx_destroy_window(setup.mlx, setup.win);
 	mlx_destroy_display(setup.mlx);
 	free(setup.mlx);
 
